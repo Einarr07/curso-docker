@@ -1,0 +1,17 @@
+{
+  "name": "curso-docker",
+  "version": "1.0.0",
+  "description": "Docker es un software de código abierto utilizado para desplegar aplicaciones dentro de contenedores virtuales. Docker nos permite empaquetar una aplicación con todas sus dependencias (bibliotecas, herramientas y archivos necesarios) dentro de 1 solo paquete llamado imagen.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.4.4"
+  }
+}
