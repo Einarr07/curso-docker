@@ -182,3 +182,17 @@ docker create -p27017:27017 --name monguito --network mired -e MONGO_INITDB_ROOT
 ```
 docker create -p3000:3000 --name chanchito --network mired miapp:1
 ```
+
+### Docker compose
+
+1) Para utilizar el siguiente comando, deberemos crear un archivo llamado `docker-compose.yml`, donde incluiremos los argumentos necesarios para su funcionamiento, tales como: la versión que estamos utilizando, el nombre de los contenedores, las imágenes, sus respectivos puertos y las variables de entorno tambien conocidos como enviroments.
+
+```
+docker compose up
+```
+
+2) Si quisieramos llegar a eliminar estos contenedores e imagenes creados por el mismo docker debemos ejecutar el comando:
+
+```
+docker compose down
+```
