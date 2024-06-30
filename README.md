@@ -200,3 +200,10 @@ docker compose down
 ### Volumes
 
 Utilizamos los volumes para que nuestros datos persistan en el tiempo así eliminemos nuestro contenedor o realicemos cambios al momento de crear una nueva aplicación, esto nos sirve para agilizar el desarrollo.
+
+Nota: 
+Si quisieramos ejecutar un archivo docker en especifico debemos utilizar este comando:
+
+```
+docker compose -f docker-compose-dev.yml up
+```
