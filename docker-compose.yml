@@ -13,4 +13,11 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
-    
+    volumes:
+      - mongo-data:/data/db
+      # mysql -> /var/lib/mysql
+      # postgres -> /var/lib/postgresql
+
+volumes:
+  mongo-data:
+  # Se deben agg los volumenes para utilizarlos en el contenedor
