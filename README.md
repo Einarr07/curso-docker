@@ -4,6 +4,26 @@ Este repositorio contiene una guía práctica para aprender los **conceptos bás
 
 ---
 
+## 📑 Índice
+
+- [🚀 Comandos básicos](#-comandos-básicos)
+- [🔍 Exploración de comandos](#-exploración-de-comandos)
+- [📂 Flujo de trabajo](#-flujo-de-trabajo)
+- [🛠️ Construcción de imágenes con Dockerfile](#️-construcción-de-imágenes-con-dockerfile)
+    - [1. Crear la imagen](#1-crear-la-imagen)
+    - [2. Construir con nombre y tag](#2-construir-con-nombre-y-tag)
+- [🖥️ Construcción y ejecución de contenedores](#️-construcción-y-ejecución-de-contenedores)
+- [🗂️ Gestión de imágenes](#️-gestión-de-imágenes)
+- [🛠️ Gestión de contenedores](#️-gestión-de-contenedores)
+    - [Ejecutar múltiples contenedores](#ejecutar-múltiples-contenedores-de-la-misma-imagen)
+    - [Listar todos los contenedores](#listar-todos-los-contenedores-incluidos-detenidos)
+    - [Ver tamaño de los contenedores](#ver-tamaño-de-los-contenedores)
+    - [Detener un contenedor](#detener-un-contenedor)
+    - [Monitorear recursos](#monitorear-recursos-de-los-contenedores)
+- [✅ Conclusión](#-conclusión)
+
+---
+
 ## 🚀 Comandos básicos
 
 Verificar la versión instalada:
