@@ -22,6 +22,7 @@ Este repositorio contiene una guía práctica para aprender los **conceptos bás
   - [Monitorear recursos](#monitorear-recursos-de-los-contenedores)
 - [📦 Volúmenes](#-volúmenes)
 - [🌐 Redes](#-redes-networks)
+- [🐳 Docker hub](#-docker-hub)
 - [✅ Conclusión](#-conclusión)
 
 ---
@@ -350,6 +351,85 @@ Eliminar una red existente:
 ```bash
 docker network rm <nombre>
 ```
+
+## 🐳 Docker Hub
+
+### 1. Iniciar sesión
+Para publicar una imagen en Docker Hub, primero debes tener una cuenta creada y autenticarte:
+```bash
+docker login
+```
+
+---
+
+### 2. Construir la imagen con nombre y tag
+Es importante que el nombre de la imagen siga la convención `<usuario>/<repositorio>:<versión>`:
+```bash
+docker build -t <usuario>/<nombre_imagen>:<version> .
+```
+
+Ejemplo:
+```bash
+docker build -t miusuario/sitioweb:1.0 .
+```
+
+---
+
+### 3. Publicar la imagen en Docker Hub
+Una vez creada, la subimos con:
+```bash
+docker push <usuario>/<nombre_imagen>:<version>
+```
+
+Ejemplo:
+```bash
+docker push miusuario/sitioweb:1.0
+```
+
+---
+
+### 4. Descargar y ejecutar imágenes de Docker Hub
+Para ejecutar una imagen publicada en Docker Hub:
+```bash
+docker run --name <nombre_contenedor> -it --rm -d -p 8080:80 <usuario>/<nombre_imagen>:<version>
+```
+
+**Parámetros útiles:**
+- `-d` → ejecuta en segundo plano (no muestra logs).
+- `-it` → interactivo (permite ver logs en terminal).
+- `--rm` → elimina el contenedor al detenerse.
+- `/bin/bash` → si quieres abrir una terminal dentro del contenedor.
+
+Ejemplo:
+```bash
+docker run --name web -it --rm -p 8080:80 miusuario/sitioweb:1.0
+```
+
+---
+
+### 5. Compartir imágenes sin Docker Hub
+También puedes exportar e importar imágenes manualmente.
+
+#### Guardar una imagen en un archivo
+```bash
+docker save <nombre_imagen>:<version> -o <nombre_archivo>.rar
+```
+
+Ejemplo:
+```bash
+docker save miusuario/sitioweb:1.0 > sitioweb.rar
+```
+
+#### Cargar una imagen desde un archivo
+```bash
+docker load --input <nombre_archivo>.tar
+```
+
+Ejemplo:
+```bash
+docker load --input sitioweb.tar
+```
+
 
 ---
 
