@@ -23,6 +23,7 @@ Este repositorio contiene una guía práctica para aprender los **conceptos bás
 - [📦 Volúmenes](#-volúmenes)
 - [🌐 Redes](#-redes-networks)
 - [🐳 Docker hub](#-docker-hub)
+- [🐙 Docker compose](#-docker-compose)
 - [✅ Conclusión](#-conclusión)
 
 ---
@@ -207,15 +208,13 @@ Representación de bits:
 ![tamaño de los bits](images/tamaño_bits.png)
 
 ---
-Un bit representa: 
-- 1 bit → Unidad basica (puede ser 0 o 1). 
-- 1 byte (B) = 8 bits. 
-- 1 kilobyte (KB) = 1,024 bytes. 
-- 1 megabyte (MB) = 1,024 KB. 
-- 1 gigabyte (GB) = 1,024 MB. 
+Un bit representa:
+- 1 bit → Unidad básica (puede ser 0 o 1).
+- 1 byte (B) = 8 bits.
+- 1 kilobyte (KB) = 1,024 bytes.
+- 1 megabyte (MB) = 1,024 KB.
+- 1 gigabyte (GB) = 1,024 MB.
 - 1 terabyte (TB) = 1,024 GB.
----
-
 ---
 
 ### Detener un contenedor
@@ -283,64 +282,10 @@ Listar todas las redes:
 docker network ls
 ```
 
-Tipos de redes:
-```
-1. Bridge (por defecto)
-
-Qué es: Una red interna creada automáticamente por Docker.
-
-Cómo funciona: Todos los contenedores conectados a esa red pueden comunicarse entre ellos por nombre de contenedor.
-
-Beneficios:
-
-Aislamiento parcial: los contenedores se comunican solo si están en la misma red.
-
-Fácil para entornos locales y pruebas.
-
-Te permite mapear puertos al host (-p 8080:80).
-
-📌 Cuándo usarlo: 
-Cuando quieres levantar varios contenedores (ej: app + base de datos) 
-y que se comuniquen solo entre ellos, sin exponerlos todos al host.
-```
-```
-2. Host
-
-Qué es: El contenedor comparte directamente la red del host (tu máquina).
-
-Cómo funciona: El contenedor no tiene su propia IP → usa la del host.
-
-Beneficios:
-
-Mejor rendimiento en algunos casos, porque elimina la capa de red virtual.
-
-Útil si necesitas exponer servicios directamente al host sin puertos adicionales.
-
-📌 Cuándo usarlo:
-
-En Linux, cuando un contenedor necesita comunicarse con procesos del host sin configuraciones extra.
-
-Ejemplo: monitorización (Prometheus, Grafana), donde el contenedor necesita acceso directo a métricas del host.
-
-⚠️ Contras: Pierdes aislamiento. Si un contenedor es comprometido, tiene acceso directo a la red de tu máquina.
-```
-```
-3. None
-
-**Qué es:** El contenedor no tiene acceso a ninguna red.
-
-Beneficios:
-
-Seguridad máxima → el contenedor está totalmente aislado.
-
-Ideal para pruebas unitarias o procesamiento de datos donde no requieras red.
-
-📌 Cuándo usarlo:
-
-Cuando quieras que el contenedor no tenga conexión externa.
-
-Por ejemplo: ejecutar un script que solo procese un archivo local.
-```
+### Tipos de redes
+- **Bridge (por defecto):** útil para comunicación entre contenedores en un mismo proyecto.
+- **Host:** el contenedor comparte la red del host. Más rápido, pero menos aislado.
+- **None:** el contenedor queda sin red, aislado totalmente.
 
 Crear una red personalizada:
 ```bash
@@ -352,92 +297,93 @@ Eliminar una red existente:
 docker network rm <nombre>
 ```
 
+---
+
 ## 🐳 Docker Hub
 
 ### 1. Iniciar sesión
-Para publicar una imagen en Docker Hub, primero debes tener una cuenta creada y autenticarte:
 ```bash
 docker login
 ```
 
----
-
 ### 2. Construir la imagen con nombre y tag
-Es importante que el nombre de la imagen siga la convención `<usuario>/<repositorio>:<versión>`:
 ```bash
 docker build -t <usuario>/<nombre_imagen>:<version> .
 ```
 
-Ejemplo:
-```bash
-docker build -t miusuario/sitioweb:1.0 .
-```
-
----
-
 ### 3. Publicar la imagen en Docker Hub
-Una vez creada, la subimos con:
 ```bash
 docker push <usuario>/<nombre_imagen>:<version>
 ```
 
-Ejemplo:
-```bash
-docker push miusuario/sitioweb:1.0
-```
-
----
-
-### 4. Descargar y ejecutar imágenes de Docker Hub
-Para ejecutar una imagen publicada en Docker Hub:
+### 4. Descargar y ejecutar imágenes
 ```bash
 docker run --name <nombre_contenedor> -it --rm -d -p 8080:80 <usuario>/<nombre_imagen>:<version>
 ```
 
-**Parámetros útiles:**
-- `-d` → ejecuta en segundo plano (no muestra logs).
-- `-it` → interactivo (permite ver logs en terminal).
-- `--rm` → elimina el contenedor al detenerse.
-- `/bin/bash` → si quieres abrir una terminal dentro del contenedor.
+### 5. Compartir imágenes sin Docker Hub
 
-Ejemplo:
+Guardar una imagen:
 ```bash
-docker run --name web -it --rm -p 8080:80 miusuario/sitioweb:1.0
+docker save <nombre_imagen>:<version> -o <archivo>.tar
+```
+
+Cargar una imagen:
+```bash
+docker load --input <archivo>.tar
 ```
 
 ---
 
-### 5. Compartir imágenes sin Docker Hub
-También puedes exportar e importar imágenes manualmente.
+## 🐙 Docker Compose
 
-#### Guardar una imagen en un archivo
+**Docker Compose** es una herramienta que nos permite **definir, configurar y orquestar múltiples contenedores** mediante un archivo `docker-compose.yml`.  
+Con él podemos manejar de forma sencilla:
+- **Servicios** (ej. frontend, backend, base de datos)
+- **Redes** (comunicación entre contenedores)
+- **Volúmenes** (persistencia de datos)
+- **Config y Secrets** (manejo seguro de configuraciones y credenciales)
+
+### Comandos principales
+Construir servicios:
 ```bash
-docker save <nombre_imagen>:<version> -o <nombre_archivo>.rar
+docker compose build
 ```
 
-Ejemplo:
+Levantar servicios:
 ```bash
-docker save miusuario/sitioweb:1.0 > sitioweb.rar
+docker compose up
 ```
 
-#### Cargar una imagen desde un archivo
+Detener servicios:
 ```bash
-docker load --input <nombre_archivo>.tar
+docker compose down
 ```
 
-Ejemplo:
-```bash
-docker load --input sitioweb.tar
+### Ejemplo simple
+```yaml
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
 ```
 
+📌 `depends_on` asegura que `backend` arranque antes que `frontend`, pero **no espera a que esté listo**.  
+Para asegurarlo, se recomienda usar un **healthcheck** en `backend`.
 
 ---
 
 ## ✅ Conclusión
-Con estos comandos básicos puedes:
-- Crear imágenes personalizadas.
-- Ejecutar y administrar contenedores.
-- Gestionar volúmenes y redes.
-- Optimizar recursos y aplicar buenas prácticas con Docker.
 
----
+Docker y Docker Compose son herramientas fundamentales para el desarrollo moderno.  
+Permiten empaquetar aplicaciones, crear entornos reproducibles y gestionar múltiples servicios de forma sencilla.  
